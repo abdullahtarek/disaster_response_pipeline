@@ -23,6 +23,8 @@ def clean_data(df):
     
     categories.columns = category_colnames
     
+    categories= categories[categories["related"]!="related-2"]
+    
     #make the columns zero or  1 only
     for column in categories:
         # set each value to be the last character of the string
