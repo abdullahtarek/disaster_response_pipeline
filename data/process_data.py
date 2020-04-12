@@ -28,13 +28,13 @@ def clean_data(df):
     #make the columns zero or  1 only
     for column in categories:
         # set each value to be the last character of the string
-        categories[column] = categories[column].str[-1]
+        categories[column] = categories[column].str.strip().str[-1]
     # convert column from string to numeric
     categories[column] = pd.to_numeric(categories[column])
     
     #merge the expanded categories with the original dataframe
     df = df.drop(columns=['categories'])
-    df = pd.concat([df,categories], axis=1)
+    df = pd.concat([df,categories],join="inner", axis=1)
     
     #drop duplicates
     df.drop_duplicates(inplace=True)
