@@ -3,7 +3,8 @@
 ### Table of contents
 - [Introduction](#Introduction)     
 - [Requirements](#Requirements)     
-- [Instructions](#Instructions)      
+- [Instructions](#Instructions)   
+- [File description](#File_description)
 
 
 ### Introduction        
@@ -29,3 +30,14 @@ This project uses the [Figure 8](https://www.figure-eight.com/) dataset to make 
     `python run.py`
 
 3. Go to http://0.0.0.0:3001/
+
+### File_description:
+* **ETL_Pipeline_Preparation.ipynb**: Notebook to explore the dataset and explore how to wrangle and clean the data
+* **ML_Pipeline_Preparation.ipynb**: Notebook for exploring different models and paramters on the wrangled dataset. and using grid search to find optimal paramters 
+* **data/proccess_data.py**: python file that contains clean code of an ETL pipeline that can be run on the figure 8 dataset. like the above example
+* **model/train_classifier.py**: python file that contains clean code of a machine learning pipeline that we can tun on the database extracted from the proccess_data.py step
+* **app/run.py**: python file that runs the flask backend of the website.
+* **app/templates/master.html**: html page that uses plotly to show a visualization on the webpage and takes input from the user for message classification
+* **app/templates.go.html**: html page that displays the result of the classification
+
+
