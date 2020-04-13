@@ -1,5 +1,22 @@
 # Disaster Response Pipeline Project
 
+### Table of contents
+- [Introduction](#Introduction)     
+- [Requirements](#Requirements)     
+- [Instructions](#Instructions)      
+
+
+### Introduction        
+This project uses the [Figure 8](https://www.figure-eight.com/) dataset to make an API that classifies disaster messages using NLP and machine learning. This helps to filter out the important messages in case of disaster when systems are least capable of going through those messages to find important ones.
+
+### Requirements
+* python >=3.6
+* sklearn
+* pandas
+* plotly
+* flask
+* nltk
+
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
 
