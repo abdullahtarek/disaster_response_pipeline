@@ -26,25 +26,46 @@ nltk.download('wordnet')
 nltk.download('stopwords')
 
 def load_data(database_filepath):
+    """
+    This file reads in a database file path and returns the approporiate columns for the message and the expected output
+    
+    Args:
+    database_filepath: string the path that contains the database file
+    
+    Returns:
+    X: message for every row in the database    
+    y: expected output for each row in the database 
+    column_names: the column names for every output column
+    
+    """
+    
     engine = create_engine('sqlite:///'+database_filepath)
     df = pd.read_sql_table('disaster_messages',engine.connect())
     
    
-    #REMOVE THIS and fix from the data wrangling part
     output_column_names=list(set(df.columns)-set(["id",'message',"original","genre"]))
     df[output_column_names]=df[output_column_names].astype("int32")
     
-    df = df[df["related"]<2]
     
-    X = df["message"].to_numpy()
+    X = df["message"]
     y = df[output_column_names]
-    y=y.to_numpy()
     
     
     
     return X,y,output_column_names
 
 def tokenize(text):
+    """
+    This function takes in a sting cleans it and tokenize it.
+    
+    Args:
+    text: string  The input text that is going to be cleaned and tokenized
+    
+    Returns:
+    list: list of tokens after cleaning.
+    """
+    
+    #initialize word lemmatizer
     lemmatizer = WordNetLemmatizer() 
     #remove punctuation and uwanted characters
     text=re.sub("r[^a-zA-Z0-9]"," ",text)
@@ -59,6 +80,14 @@ def tokenize(text):
 
 
 def build_model():
+    """
+    This function builds the pipeline that we are going to train
+    
+    Returns:
+    sklearn pipeline object: the pipeline that we are going to train
+    """
+    
+    # instantiate a pipeline with Bag of words TFIDF then KNN classifier wrapped with multioutput classifier
     pipeline = Pipeline([
     ('bow',CountVectorizer(tokenizer=tokenize)),
     ('tfidf',TfidfTransformer()),
@@ -69,15 +98,37 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    """
+    This function prints out the evaluation of model provided in the params. It calculates the percision, recall and F1 score
     
+    Args:
+    model: the sklearn model that we ant to evaluate against out testing set
+    X_test: list the messages of the testing set
+    Y_test: list the expected output for each message
+    category_names: list the column names for each output class in the Y_test
+    
+    
+    Returns:
+    None
+    prints an evaluation of the model
+    
+    """
     ypred= model.predict(X_test)
     print(classification_report(np.array(Y_test,ndmin=2),np.array(ypred,ndmin=2), labels=list(range(36)),target_names= category_names ))
 
 
 def save_model(model, model_filepath):
+    """
+    save a model to a pkl file 
+    
+    Args:
+    model: sklearn model
+    model_filepath: string the path to file we are saving thee model to
+    
+    """
     filename = model_filepath.strip()
-    if filename[-4:]!='.sav':
-        filename+='.sav'
+    if filename[-4:]!='.pkl':
+        filename+='.pkl'
     pickle.dump(model, open(filename, 'wb'))
 
 

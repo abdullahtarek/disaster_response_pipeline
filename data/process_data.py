@@ -5,7 +5,21 @@ import numpy as np
 import re
 
 def load_data(messages_filepath, categories_filepath):
-    # 1. extract datasets
+    """
+    Reads in data from a csv and merge them together. 
+    
+    Args:
+    message_filepath: string path to the csv file that has messages data
+    categories_filepath: string path to the csv file that has the catgories for each message 
+    
+    Returns:
+    dataframe: the merged data
+    
+    
+    """
+    
+    
+    # read datasets from csv files
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     
@@ -15,6 +29,15 @@ def load_data(messages_filepath, categories_filepath):
     return df
     
 def clean_data(df):
+    """
+    Cleans and wrangels the data into a format that can be easily put into a machine learning algorithm
+    
+    Args: 
+    df : dataframe containig the data from the load data function
+    
+    Returns:
+    df: dataframe containing the data after cleaning and wrangling
+    """
     
     #transform the column that have th message category into a format that will be easily used for ML algorithms
     category_colnames= re.sub('[\-0-1]','',df.loc[0,'categories']).split(';') 
@@ -43,6 +66,21 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
+    """
+    load the data from a dataframe to a database
+    
+    Args:
+    df: the dataframe to save as a database
+        
+    databse_filename:string the path to save the database in
+        
+    Returns:
+    None
+    saves the dataframe as a database at the specified location
+    
+    
+    """
+    
     database_name="disaster_messages"
     engine = create_engine('sqlite:///'+database_filename)
     df.to_sql(database_name, engine, index=False)  

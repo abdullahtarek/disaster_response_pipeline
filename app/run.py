@@ -15,9 +15,22 @@ import pickle
 app = Flask(__name__)
 
 def tokenize(text):
+    """
+    This function takes in a sting cleans it and tokenize it.
+    
+    Args:
+    text: string  The input text that is going to be cleaned and tokenized
+    
+    Returns:
+    list: list of tokens after cleaning.
+    """
+    
+    # tokenize the text onto words
     tokens = word_tokenize(text)
+    #initialize lemmatizer
     lemmatizer = WordNetLemmatizer()
 
+    # clean each word by making it lower case and lemmatizing it
     clean_tokens = []
     for tok in tokens:
         clean_tok = lemmatizer.lemmatize(tok).lower().strip()
@@ -26,11 +39,11 @@ def tokenize(text):
     return clean_tokens
 
 # load data
-engine = create_engine('sqlite:///../data/disaster_messages.db')
+engine = create_engine('sqlite:///../data/DisasterResponse.db')
 df = pd.read_sql_table('disaster_messages', engine)
 
 # load model
-model = pickle.load(open("../models/knn_model.sav", 'rb')) #joblib.load("../models/your_model_name.pkl")
+model = pickle.load(open("../models/knn_model.pkl", 'rb')) #joblib.load("../models/your_model_name.pkl")
 
 
 # index webpage displays cool visuals and receives user input text for model
